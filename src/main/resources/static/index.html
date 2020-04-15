@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo</title>
+
+    <link rel="stylesheet" href="css/common.css">
+
+</head>
+<body>
+    <div class="contents">
+        <div class="filter">
+            <label>완료 여부</label>
+            <select >
+                <option>전체</option>
+                <option>완료</option>
+                <option>미완료</option>
+            </select>
+            <input type="text"> <button class="button">검색</button>
+        </div>
+        <div class="list">
+            <dl class="card add">
+                <button> + </button>
+            </dl>
+            <dl class="card add-box">
+                <dt>
+                    <input type="text" placeholder="Title"> <button class="button">등록</button>
+                    <img src="/icon/close-button.png" class="close"/>
+                </dt>
+            </dl>
+            <dl class="card">
+                <dt>
+                    <input type="checkbox" id="ck_1">
+                    <label for="ck_1">TODO 1</label>
+                    <img src="/icon/close-button.png" class="close"/>
+                </dt>
+                <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
+            </dl>
+
+            <dl class="card">
+                <dt>
+                    <input type="checkbox" id="ck_2">
+                    <label for="ck_2">TODO 2</label>
+                    <img src="/icon/close-button.png" class="close"/>
+                </dt>
+                <dd>@1</dd>  <dd>@3</dd>
+                <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
+            </dl>
+            <dl class="card">
+                <dt>
+                    <input type="checkbox" id="ck_3">
+                    <label for="ck_3">TODO 1</label>
+                    <img src="/icon/close-button.png" class="close"/>
+                </dt>
+                <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
+            </dl>
+
+        </div>
+    </div>
+
+
+</body>
+</html>

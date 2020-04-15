@@ -1,0 +1,97 @@
+body{
+    margin: 0;
+    padding: 0 100px;
+}
+.contents{
+    text-align: center;
+    margin-top: 50px;
+    width: 100%;
+}
+.filter{
+    height: 35px;
+}
+.filter input[type=text]{
+    width: 250px;
+    height: 28px;
+}
+.filter button{
+    height: 34px;
+    vertical-align: middle;
+}
+.list{
+    padding: 20px;
+}
+.list .card{
+    border: 1px solid gray;
+    padding: 10px 0;
+    border-radius: 10px;
+    position: relative;
+}
+.list .card img{
+    width: 33px;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+.list .card input[type=checkbox]{
+    width: 25px;
+    height: 25px;
+    left: 10px;
+    position: absolute;
+
+}
+.list .card dt{
+    font-weight: bold;
+    font-size: 25px;
+}
+.list .card dd{
+    margin: 5px 0;
+}
+.list .card dd:last-child {
+    margin: 5px 0 0;
+    font-size: 13px;
+}
+.list .card.add{
+    background: linear-gradient(180deg, rgba(255,251,31,1) 0%, rgba(235,231,12,1) 100%);
+}
+.list .card.add button{
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 50px;
+}
+.list .card.add-box button{
+    cursor: pointer;
+    height: 34px;
+    width: 80%;
+    vertical-align: middle;
+}
+
+.input-box, .text-box{
+    margin-top: 50px;
+    text-align: center;
+}
+.input-box input[type=text]{
+    height: 40px;
+    width: 700px;
+    font-size: 25px;
+}
+.input-box input[type=button]{
+    margin: 3px 0;
+    height: 46px;
+    font-size: 20px;
+}
+.none{
+    display: none;
+}
+.block{
+    display: block;
+}
+select{
+    height: 34px;
+    vertical-align: middle;
+}
+input[type=text]{
+    height: 28px;
+    font-size: 18px;
+}
