@@ -19,42 +19,70 @@
             <input type="text"> <button class="button">검색</button>
         </div>
         <div class="list">
-            <dl class="card add">
-                <button> + </button>
-            </dl>
+<!--            <dl class="card add">-->
+<!--                <button> + </button>-->
+<!--            </dl>-->
             <dl class="card add-box">
                 <dt>
                     <input type="text" placeholder="Title"> <button class="button">등록</button>
-                    <img src="/icon/close-button.png" class="close"/>
+                    <div class="button">
+                        <div  class="close"></div>
+                    </div>
                 </dt>
+                <dd><label class="sub-title">참조카드</label><input type="text" placeholder="카드ID ,로 연결"></dd>
             </dl>
             <dl class="card">
+                <label class="id">@1</label>
                 <dt>
                     <input type="checkbox" id="ck_1">
-                    <label for="ck_1">TODO 1</label>
-                    <img src="/icon/close-button.png" class="close"/>
+                    <label >TODO 1</label>
+                    <div class="button">
+                        <div  class="edit"></div>
+                        <div  class="close"></div>
+                    </div>
                 </dt>
                 <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
             </dl>
 
             <dl class="card">
+                <label class="id">@2</label>
                 <dt>
                     <input type="checkbox" id="ck_2">
-                    <label for="ck_2">TODO 2</label>
-                    <img src="/icon/close-button.png" class="close"/>
+                    <label >TODO 2</label>
+                    <div class="button">
+                        <div  class="edit"></div>
+                        <div  class="close"></div>
+                    </div>
                 </dt>
                 <dd>@1</dd>  <dd>@3</dd>
                 <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
             </dl>
             <dl class="card">
+                <label class="id">@3</label>
                 <dt>
                     <input type="checkbox" id="ck_3">
-                    <label for="ck_3">TODO 1</label>
-                    <img src="/icon/close-button.png" class="close"/>
+                    <label >TODO 1</label>
+                    <div class="button">
+                        <div  class="edit"></div>
+                        <div  class="close"></div>
+                    </div>
                 </dt>
                 <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
             </dl>
-
+            <dl class="card add-box">
+                <label class="id">@4</label>
+                <dt>
+                    <input type="checkbox" id="ck_4">
+                    <input type="text" placeholder="Title" value="TODO 4">
+                    <div class="button">
+                        <div  class="save"></div>
+                        <div  class="close"></div>
+                    </div>
+                </dt>
+                <dd><label class="sub-title">카드 연결</label><input type="text" value="1,3"></dd>
+                <!--<dd>@1</dd>  <dd>@3</dd>-->
+                <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
+            </dl>
         </div>
     </div>
 
