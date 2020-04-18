@@ -19,10 +19,12 @@ public class Item {
     private String content;
 
     @OneToMany
-    @JoinTable(name = "ITEM_REF",
-            joinColumns = @JoinColumn(name = "ITEM_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ITEM_REF_ID"))
-    private List<Item> refItem;
+    @JoinTable(name = "item_ref",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_ref_id"))
+    private List<Item> refItems;
+
+    private boolean completeYn;
 
     @CreationTimestamp
     private LocalDateTime createTime;
