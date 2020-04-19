@@ -44,7 +44,9 @@ body{
     height: 25px;
     left: 10px;
     position: absolute;
-
+}
+.list .card input[type=checkbox]:checked + label{
+    text-decoration: line-through;
 }
 .list .card dt{
     font-weight: bold;
@@ -52,6 +54,9 @@ body{
 }
 .list .card dd{
     margin: 5px 0;
+}
+.list .card dd.ref{
+    display: inline-block;
 }
 .list .card dd:last-child {
     margin: 5px 0 0;
@@ -84,20 +89,6 @@ body{
     font-size: 14px;
 }
 
-.input-box, .text-box{
-    margin-top: 50px;
-    text-align: center;
-}
-.input-box input[type=text]{
-    height: 40px;
-    width: 75%;
-    font-size: 25px;
-}
-.input-box input[type=button]{
-    margin: 3px 0;
-    height: 46px;
-    font-size: 20px;
-}
 .none{
     display: none;
 }

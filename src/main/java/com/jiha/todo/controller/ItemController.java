@@ -24,7 +24,7 @@ public class ItemController {
     }
 
     @PutMapping
-    public ResponseEntity updateCard(ItemRequestDto requestDto){
+    public ResponseEntity updateCard(@RequestBody ItemRequestDto requestDto){
         itemService.update(requestDto);
         return ResponseEntity.ok(Response.SC_OK);
     }

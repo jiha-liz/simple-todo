@@ -25,12 +25,7 @@ public class ItemService {
     @Transactional
     public void create(ItemRequestDto requestDto){
         Item item = modelMapper.map(requestDto, Item.class);
-        if(!requestDto.getRefItems().isEmpty()) {
-            for (Long itemId : requestDto.getRefItems()) {
-                isValidItem(itemId);
-                item.addRefItem(itemId);
-            }
-        }
+        convertRefItem(requestDto.getRefItems(), item);
         itemRepository.save(item);
     }
 
@@ -55,11 +50,22 @@ public class ItemService {
         item.setCompleteYn(completeYn);
     }
 
+    @Transactional
     public void update(ItemRequestDto requestDto) {
-
+        isValidItem(requestDto.getId());
         Item item = modelMapper.map(requestDto, Item.class);
+        convertRefItem(requestDto.getRefItems(), item);
         itemRepository.save(item);
 
+    }
+
+    private void convertRefItem(List<Long> refItems, Item item) {
+        if (!refItems.isEmpty()) {
+            for (Long itemId : refItems) {
+                isValidItem(itemId);
+                item.addRefItem(itemId);
+            }
+        }
     }
 
     @Transactional
