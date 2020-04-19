@@ -55,12 +55,20 @@ public class ItemService {
         isValidItem(requestDto.getId());
         Item item = modelMapper.map(requestDto, Item.class);
         convertRefItem(requestDto.getRefItems(), item);
+
+        if(item.getRefItems().stream().anyMatch(ref -> !ref.isCompleteYn())){
+            item.setCompleteYn(false);
+        }
         itemRepository.save(item);
 
     }
 
+    /**
+     * id값만 있는 리스트를 유효성 검사 후 item으로 변환하여 참조키로 넣음
+     */
     private void convertRefItem(List<Long> refItems, Item item) {
         if (!refItems.isEmpty()) {
+            item.getRefItems().clear();
             for (Long itemId : refItems) {
                 isValidItem(itemId);
                 item.addRefItem(itemId);
