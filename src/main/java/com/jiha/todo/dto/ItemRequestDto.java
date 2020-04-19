@@ -2,6 +2,7 @@ package com.jiha.todo.dto;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -11,6 +12,6 @@ public class ItemRequestDto {
 
     private String content;
 
-    private List<Long> refItems;
+    private List<Long> refItems = new ArrayList<>();
 
 }

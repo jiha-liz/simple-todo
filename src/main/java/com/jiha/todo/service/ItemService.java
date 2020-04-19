@@ -7,7 +7,9 @@ import com.jiha.todo.repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +22,20 @@ public class ItemService {
 
     private final ModelMapper modelMapper;
 
+    @Transactional
     public void create(ItemRequestDto requestDto){
-
         Item item = modelMapper.map(requestDto, Item.class);
+        if(!requestDto.getRefItems().isEmpty()) {
+            for (Long itemId : requestDto.getRefItems()) {
+                isValidItem(itemId);
+                item.addRefItem(itemId);
+            }
+        }
         itemRepository.save(item);
+    }
 
+    private Item isValidItem(Long itemId){
+        return itemRepository.findById(itemId).orElseThrow(()-> new ValidationException("등록되지 않은 카드 ID입니다."));
     }
 
     public List<ItemResponseDto> getList() {
@@ -35,16 +46,13 @@ public class ItemService {
              .collect(Collectors.toList());
     }
 
-    public boolean statusCheck(Long id, boolean completeYn) {
-        Item item = itemRepository.findById(id).orElse(null);
-        if(item == null ) return false;
+    @Transactional
+    public void statusUpdate(Long id, boolean completeYn) {
+        Item item = isValidItem(id);
         if(completeYn){
-            if(item.getRefItems().stream().anyMatch(ref -> !ref.isCompleteYn())) return false;
+            if(item.getRefItems().stream().anyMatch(ref -> !ref.isCompleteYn())) throw new ValidationException("참조카드 완료 후 완료가능합니다.");
         }
-
         item.setCompleteYn(completeYn);
-
-        return true;
     }
 
     public void update(ItemRequestDto requestDto) {

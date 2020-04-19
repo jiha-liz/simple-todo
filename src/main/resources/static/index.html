@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Todo</title>
-
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="css/common.css">
 
 </head>
@@ -22,14 +22,14 @@
 <!--            <dl class="card add">-->
 <!--                <button> + </button>-->
 <!--            </dl>-->
-            <dl class="card add-box">
+             <dl class="card add-box" id="create-card">
                 <dt>
-                    <input type="text" placeholder="Title"> <button class="button">등록</button>
+                    <input type="text" placeholder="Content" id="create-content"> <button class="button" id="create-btn">등록</button>
                     <div class="button">
                         <div  class="close"></div>
                     </div>
                 </dt>
-                <dd><label class="sub-title">참조카드</label><input type="text" placeholder="카드ID ,로 연결"></dd>
+                <dd><label class="sub-title">참조카드</label><input type="text" placeholder="카드ID ,로 연결" id="create-ref"></dd>
             </dl>
             <dl class="card">
                 <label class="id">@1</label>
@@ -85,7 +85,106 @@
             </dl>
         </div>
     </div>
+<script type="application/javascript">
 
+    function load(){
+        $.ajax({
+            url:'/item/list',
+            type:'GET',
+            dataType: 'json',
+            contentType : 'application/json',
+            // data: JSON.stringify({
+            //     url : $('#url').val().trim()
+            // }),
+            success:function(data){
+                // $('#resBox').removeClass("none").addClass("show");
+                // $('#changeUrl').text(data.changeUrl);
+                // $('#reqCnt').text(data.reqCnt);
+                console.log(data)
+            },
+            error:function () {
+               alert("로드실패");
+            }
+        })
+
+    }
+
+    function validRef(e) {
+        let itemsString = $('#create-ref').val();
+
+        if(itemsString != '') {
+            let check = true;
+            itemsString.split(',').forEach((value, index) => {
+                if (isNaN(value)){
+                    check = false;
+                }
+            });
+            if(check){
+               return $.map( itemsString.split(','), Number );
+            }else {
+                alert("참조 카드ID는 숫자만 입력 가능합니다.");
+                return false;
+            }
+        } else{
+            return [];
+        }
+
+    }
+
+    function createCardEvent(){
+        if( $('#create-content').val() .trim() ==='')  return false;
+        let refItems = validRef();
+        if(refItems === false) return false;
+
+        $.ajax({
+            url:'/item',
+            type:'POST',
+            dataType: 'json',
+            contentType : 'application/json',
+            data: JSON.stringify({
+                content : $('#create-content').val() .trim(),
+                refItems : refItems
+            }),
+            success : function(data){
+                $('#create-content').val('');
+                $('#create-ref').val('');
+                load();
+            },
+            error : function (data) {
+                alert(data.responseJSON.message);
+            }
+        })
+    }
+
+    function statusUpdateEvent(){
+        let ckbox = $(this);
+        let ckId = ckbox.prop('id');
+        let cardId = ckId.split('_')[1];
+        let complete = ckbox.prop('checked');
+        $.ajax({
+            url:'/item/'+cardId+'?complete='+complete,
+            type:'PUT',
+            dataType: 'json',
+            contentType : 'application/json',
+            success : function(data){
+
+                //load();
+            },
+            error : function (data) {
+                ckbox.prop('checked', !complete);
+                alert(data.responseJSON.message);
+
+            }
+        })
+    }
+
+
+    $(document).on('click','.card input[type=checkbox]', statusUpdateEvent);
+
+    $('#create-btn').click(createCardEvent);
+    load();
+
+</script>
 
 </body>
 </html>

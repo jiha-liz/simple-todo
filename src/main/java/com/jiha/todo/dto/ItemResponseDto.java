@@ -12,7 +12,7 @@ public class ItemResponseDto {
 
     private String content;
 
-    private List<Long> refItems;
+    private List<ItemResponseDto> refItems;
 
     private boolean completeYn;
 

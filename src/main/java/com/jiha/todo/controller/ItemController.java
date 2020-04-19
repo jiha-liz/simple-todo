@@ -3,6 +3,7 @@ package com.jiha.todo.controller;
 import com.jiha.todo.dto.ItemRequestDto;
 import com.jiha.todo.service.ItemService;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,24 +18,25 @@ public class ItemController {
      * to-do card create
      */
     @PostMapping
-    public ResponseEntity createCard(ItemRequestDto requestDto){
-
+    public ResponseEntity createCard(@RequestBody ItemRequestDto requestDto){
         itemService.create(requestDto);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(Response.SC_OK);
     }
 
     @PutMapping
     public ResponseEntity updateCard(ItemRequestDto requestDto){
 
         itemService.update(requestDto);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(Response.SC_OK);
     }
 
-
+    /**
+     * 완료/미완료 상태 업데이트
+     */
     @PutMapping("/{id}")
-    public ResponseEntity statusCheck(@PathVariable("id") Long id, @RequestParam("complete") boolean completeYn){
-
-        return ResponseEntity.ok( itemService.statusCheck(id, completeYn));
+    public ResponseEntity statusUpdate(@PathVariable("id") Long id, @RequestParam("complete") boolean completeYn){
+        itemService.statusUpdate(id, completeYn);
+        return ResponseEntity.ok(Response.SC_OK);
     }
 
     @DeleteMapping("/{id}")
