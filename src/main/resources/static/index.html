@@ -31,7 +31,7 @@
                 </dt>
                 <dd><label class="sub-title">참조카드</label><input type="text" placeholder="카드ID ,로 연결" id="create-ref"></dd>
             </dl>
-            <dl class="card">
+            <dl class="card" data-id="1">
                 <label class="id">@1</label>
                 <dt>
                     <input type="checkbox" id="ck_1">
@@ -44,7 +44,7 @@
                 <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
             </dl>
 
-            <dl class="card">
+            <dl class="card" data-id="2">
                 <label class="id">@2</label>
                 <dt>
                     <input type="checkbox" id="ck_2">
@@ -57,7 +57,7 @@
                 <dd>@1</dd>  <dd>@3</dd>
                 <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
             </dl>
-            <dl class="card">
+            <dl class="card" data-id="3">
                 <label class="id">@3</label>
                 <dt>
                     <input type="checkbox" id="ck_3">
@@ -69,7 +69,7 @@
                 </dt>
                 <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
             </dl>
-            <dl class="card add-box">
+            <dl class="card add-box" data-id="4">
                 <label class="id">@4</label>
                 <dt>
                     <input type="checkbox" id="ck_4">
@@ -157,29 +157,50 @@
     }
 
     function statusUpdateEvent(){
-        let ckbox = $(this);
-        let ckId = ckbox.prop('id');
+        let ck = $(this);
+        let ckId = ck.prop('id');
         let cardId = ckId.split('_')[1];
-        let complete = ckbox.prop('checked');
+        let complete = ck.prop('checked');
         $.ajax({
             url:'/item/'+cardId+'?complete='+complete,
             type:'PUT',
-            dataType: 'json',
-            contentType : 'application/json',
             success : function(data){
-
-                //load();
+                load();
             },
             error : function (data) {
-                ckbox.prop('checked', !complete);
+                ck.prop('checked', !complete);
                 alert(data.responseJSON.message);
 
             }
         })
     }
 
+    function cardDeleteEvent(){
+        let card = $(this).parents('dl');
+        let cardId = card.data('id');;
+        console.log(cardId)
+        let result = confirm("@"+ cardId +"을(를) 삭제하시겠습니까?");
+          if(result){
+              $.ajax({
+                  url:'/item/'+cardId,
+                  type:'DELETE',
+                  success : function(data){
+                      load();
+                  },
+                  error : function (data) {
+                      alert(data.responseJSON.message);
+                  }
+              })
+          }else {
+              console.log("xx")
+          }
+
+    }
+
 
     $(document).on('click','.card input[type=checkbox]', statusUpdateEvent);
+    $(document).on('click','.card .button .close', cardDeleteEvent);
+
 
     $('#create-btn').click(createCardEvent);
     load();

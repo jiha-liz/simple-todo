@@ -62,7 +62,9 @@ public class ItemService {
 
     }
 
+    @Transactional
     public void delete(Long id) {
+        isValidItem(id);
         itemRepository.deleteById(id);
     }
 }

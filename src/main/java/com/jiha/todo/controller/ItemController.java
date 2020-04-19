@@ -25,7 +25,6 @@ public class ItemController {
 
     @PutMapping
     public ResponseEntity updateCard(ItemRequestDto requestDto){
-
         itemService.update(requestDto);
         return ResponseEntity.ok(Response.SC_OK);
     }
@@ -39,10 +38,13 @@ public class ItemController {
         return ResponseEntity.ok(Response.SC_OK);
     }
 
+    /**
+     * 카드 삭제
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCard(@PathVariable("id") Long id){
         itemService.delete(id);
-        return ResponseEntity.ok( "success");
+        return ResponseEntity.ok(Response.SC_OK);
     }
 
 
