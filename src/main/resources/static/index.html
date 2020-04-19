@@ -178,7 +178,6 @@
     function cardDeleteEvent(){
         let card = $(this).parents('dl');
         let cardId = card.data('id');;
-        console.log(cardId)
         let result = confirm("@"+ cardId +"을(를) 삭제하시겠습니까?");
           if(result){
               $.ajax({
@@ -191,10 +190,7 @@
                       alert(data.responseJSON.message);
                   }
               })
-          }else {
-              console.log("xx")
           }
-
     }
 
 
