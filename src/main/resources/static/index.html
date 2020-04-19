@@ -111,7 +111,8 @@
             $('.list').append(html);
         });
     }
-    
+
+    // list data load + paging, search, sort
     function load(){
         $.ajax({
             url:'/item/list',
@@ -122,10 +123,6 @@
             //     url : $('#url').val().trim()
             // }),
             success:function(data){
-                // $('#resBox').removeClass("none").addClass("show");
-                // $('#changeUrl').text(data.changeUrl);
-                // $('#reqCnt').text(data.reqCnt);
-                console.log(data)
                 drawCard(data);
             },
             error:function () {
@@ -135,6 +132,7 @@
 
     }
 
+    //ref ID valid check
     function validRef(selector) {
         let itemsString = selector.val();
 
@@ -154,7 +152,6 @@
         } else{
             return [];
         }
-
     }
 
     function createCardEvent(){
@@ -218,6 +215,27 @@
         }
     }
 
+    //read mode -> edit mode
+    function cardModeChangeEvent() {
+        let card = $(this).parents('dl');
+        card.addClass('add-box');
+        let content = card.find('dt > label').text();
+        card.find('input[type=checkbox]').after('<input type="text" placeholder="Title" value="'+content+'" class="update-content">');
+        card.find('dt > label').remove();
+        card.find('.button > .edit').removeClass('edit').addClass('save');
+
+        let refItems =[];
+        if(card.find('dd').length != 1){
+            $.each(card.find('dd:not(:last-child)'), function (i,v){
+                refItems.push($(v).text().replace('@',''));
+                $(v).remove();
+            });
+        }
+
+        card.find('dd:last').before('<dd><label class="sub-title">카드 연결</label>' +
+            '<input type="text" value="'+refItems.join(',')+'" class="update-ref" placeholder="카드ID 콤마(,)로 연결"></dd>');
+    }
+
     function cardUpdateEvent(){
         let card = $(this).parents('dl');
         let cardId = card.data('id');
@@ -237,20 +255,19 @@
                 refItems : refItems
             }),
             success : function(data){
-                //편집모드 해제
                 load();
             },
             error : function (data) {
                 alert(data.responseJSON.message);
             }
         })
-
     }
 
 
     $(document).on('click','.card input[type=checkbox]', statusUpdateEvent);
     $(document).on('click','.card .button .close', cardDeleteEvent);
     $(document).on('click','.card .button .save', cardUpdateEvent);
+    $(document).on('click','.card .button .edit', cardModeChangeEvent);
 
 
     $('#create-btn').click(createCardEvent);

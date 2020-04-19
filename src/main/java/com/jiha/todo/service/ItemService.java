@@ -52,8 +52,8 @@ public class ItemService {
 
     @Transactional
     public void update(ItemRequestDto requestDto) {
-        isValidItem(requestDto.getId());
-        Item item = modelMapper.map(requestDto, Item.class);
+        Item item = isValidItem(requestDto.getId());
+        item.setContent(requestDto.getContent());
         convertRefItem(requestDto.getRefItems(), item);
 
         if(item.getRefItems().stream().anyMatch(ref -> !ref.isCompleteYn())){
@@ -71,6 +71,7 @@ public class ItemService {
             item.getRefItems().clear();
             for (Long itemId : refItems) {
                 isValidItem(itemId);
+                if(item.getId() != null && itemId == item.getId()) throw new ValidationException("본인카드를 참조할 수 없습니다.");
                 item.addRefItem(itemId);
             }
         }
