@@ -9,6 +9,16 @@
 </head>
 <body>
     <div class="contents">
+        <div class="add-div">
+            <label class="title"> TODO CARD ADD</label>
+            <dl class="card add-box" id="create-card">
+                <dt>
+                    <input type="text" placeholder="내용을 입력해주세요." id="create-content"> <button class="button" id="create-btn">등록</button>
+                </dt>
+                <dd><label class="sub-title">참조카드</label><input type="text" placeholder="카드ID 콤마(,)로 연결" id="create-ref"></dd>
+            </dl>
+        </div>
+
         <div class="filter">
             <label>완료 여부</label>
             <select >
@@ -18,16 +28,8 @@
             </select>
             <input type="text"> <button class="button">검색</button>
         </div>
+
         <div class="list">
-<!--            <dl class="card add">-->
-<!--                <button> + </button>-->
-<!--            </dl>-->
-             <dl class="card add-box" id="create-card">
-                <dt>
-                    <input type="text" placeholder="Content" id="create-content"> <button class="button" id="create-btn">등록</button>
-                </dt>
-                <dd><label class="sub-title">참조카드</label><input type="text" placeholder="카드ID ,로 연결" id="create-ref"></dd>
-            </dl>
             <dl class="card" data-id="1">
                 <label class="id">ID : 1</label>
                 <dt>
@@ -84,6 +86,32 @@
     </div>
 <script type="application/javascript">
 
+    function drawCard(data) {
+        $('.list').html('');
+        $.each(data, function (index,item) {
+
+            let checked = item.completeYn? 'checked' : '';
+            let html = '';
+            html += '<dl class="card" data-id="'+item.id+'">';
+            html +=     '<label class="id">ID : '+item.id+'</label>';
+            html +=     '<dt>';
+            html +=         '<input type="checkbox" id="ck_'+item.id+'" '+checked+'>';
+            html +=         '<label>'+item.content+'</label>';
+            html +=         '<div class="button">';
+            html +=             '<div  class="edit"></div>';
+            html +=             '<div  class="close"></div>';
+            html +=         '</div>';
+            html +=     '</dt>';
+
+            item.refItems.forEach(ref=>{
+                html += '<dd class="ref">@'+ref.id+'</dd>';
+            });
+            html +=     '<dd>작성일 : <label>'+item.createTime+'</label> | 최종수정일 : <label>'+item.updateTime+'</label></dd>';
+            html += '</dl>';
+            $('.list').append(html);
+        });
+    }
+    
     function load(){
         $.ajax({
             url:'/item/list',
@@ -98,6 +126,7 @@
                 // $('#changeUrl').text(data.changeUrl);
                 // $('#reqCnt').text(data.reqCnt);
                 console.log(data)
+                drawCard(data);
             },
             error:function () {
                alert("로드실패");
@@ -190,7 +219,6 @@
     }
 
     function cardUpdateEvent(){
-
         let card = $(this).parents('dl');
         let cardId = card.data('id');
         let content = card.find('.update-content').val();
