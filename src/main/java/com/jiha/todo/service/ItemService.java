@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
 
-    private final ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
-    private final ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Transactional
     public void create(ItemRequestDto requestDto){
