@@ -1,6 +1,7 @@
 package com.jiha.todo.controller;
 
 import com.jiha.todo.dto.ItemRequestDto;
+import com.jiha.todo.dto.ItemSearchRequestDto;
 import com.jiha.todo.service.ItemService;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.connector.Response;
@@ -53,8 +54,8 @@ public class ItemController {
 
     //검색 필터 추가
     @GetMapping("/list")
-    public ResponseEntity list(){
-        return ResponseEntity.ok(itemService.getList());
+    public ResponseEntity list(ItemSearchRequestDto searchRequestDto){
+        return ResponseEntity.ok(itemService.getList(searchRequestDto));
     }
 
 

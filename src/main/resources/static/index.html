@@ -21,12 +21,12 @@
 
         <div class="filter">
             <label>완료 여부</label>
-            <select >
-                <option>전체</option>
-                <option>완료</option>
-                <option>미완료</option>
+            <select id="search-complete">
+                <option value="">전체</option>
+                <option value="true">완료</option>
+                <option value="false">미완료</option>
             </select>
-            <input type="text"> <button class="button">검색</button>
+            <input type="text" id="search-content"> <button class="button" id="search-btn">검색</button>
         </div>
 
         <div class="list">
@@ -83,13 +83,38 @@
                 <dd>작성일 : <label>2020-04-15</label> | 최종수정일 : <label>2020-04-15</label></dd>
             </dl>
         </div>
+        <div class="pagination none">
+            <p>1</p> <p>2</p> <p>3</p>
+
+        </div>
     </div>
 <script type="application/javascript">
 
+    function changePageLoadEvent() {
+        load($(this).text());
+    }
+
+    function drawPagination(pageable, totalPages, totalElements) {
+        if(totalElements === 0){
+            $('.pagination').addClass("none");
+            return false;
+        }
+        $('.pagination').removeClass("none");
+        $('.pagination').html('');
+        let pageTag = '';
+        for(let i=1; i <=totalPages; i++){
+            let selected = '';
+            if(i === (pageable.pageNumber+1)) selected = 'selected';
+            pageTag += '<p class="'+selected+'">'+i+'</p>';
+        }
+        $('.pagination').append(pageTag);
+    }
+
     function drawCard(data) {
         $('.list').html('');
-        $.each(data, function (index,item) {
 
+        drawPagination(data.pageable, data.totalPages, data.totalElements);
+        $.each(data.list, function (index,item) {
             let checked = item.completeYn? 'checked' : '';
             let html = '';
             html += '<dl class="card" data-id="'+item.id+'">';
@@ -113,15 +138,19 @@
     }
 
     // list data load + paging, search, sort
-    function load(){
+    function load(page){
+        if(page === null || page === undefined ) {
+            page = Number($('.pagination').find('.selected').text()) ;
+        }
         $.ajax({
             url:'/item/list',
             type:'GET',
-            dataType: 'json',
             contentType : 'application/json',
-            // data: JSON.stringify({
-            //     url : $('#url').val().trim()
-            // }),
+            data:{
+                content : $('#search-content').val(),
+                completeYn : $('#search-complete').val(),
+                page : page === 0 ? 0 :  (page -1)
+            },
             success:function(data){
                 drawCard(data);
             },
@@ -206,7 +235,7 @@
                 url:'/item/'+cardId,
                 type:'DELETE',
                 success : function(data){
-                    load();
+                    load(0);
                 },
                 error : function (data) {
                     alert(data.responseJSON.message);
@@ -268,10 +297,14 @@
     $(document).on('click','.card .button .close', cardDeleteEvent);
     $(document).on('click','.card .button .save', cardUpdateEvent);
     $(document).on('click','.card .button .edit', cardModeChangeEvent);
+    $(document).on('click','.pagination p', changePageLoadEvent);
 
+    $('#search-btn').click(function () {
+        load(0);
+    });
 
     $('#create-btn').click(createCardEvent);
-    load();
+    load(0);
 
 </script>
 

@@ -142,3 +142,14 @@ input[type=text]{
     background-size: 20px 20px;
     right: 37px;
 }
+.pagination {
+    padding: 0 50px;
+}
+.pagination p{
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+}
+.pagination p.selected{
+    font-weight: bold;
+}
