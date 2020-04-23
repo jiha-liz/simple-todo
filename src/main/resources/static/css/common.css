@@ -18,7 +18,7 @@ body{
     height: 34px;
 }
 .list{
-    padding: 20px;
+    padding: 0 20px 20px;
 }
 .list .card{
     border: 1px solid gray;
@@ -145,11 +145,30 @@ input[type=text]{
 .pagination {
     padding: 0 50px;
 }
-.pagination p{
+.pagination p, .sort p{
     display: inline-block;
     margin: 0 5px;
     cursor: pointer;
 }
 .pagination p.selected{
     font-weight: bold;
+}
+.sort{
+    padding: 0 20px;
+    text-align: start;
+    margin-top:10px
+}
+.sort p{
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+}
+.sort .bar{
+    cursor: default;
+}
+.sort p.down::after{
+    content: "▼";
+}
+.sort p.up::after{
+    content: "▲";
 }

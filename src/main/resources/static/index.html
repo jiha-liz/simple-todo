@@ -29,6 +29,14 @@
             <input type="text" id="search-content"> <button class="button" id="search-btn">검색</button>
         </div>
 
+        <div class="sort" >
+            <p class="up">작성일</p>
+            <label class="bar">|</label>
+            <p >최근 수정일</p>
+            <label class="bar">|</label>
+            <p>내용</p>
+        </div>
+
         <div class="list">
             <dl class="card" data-id="1">
                 <label class="id">ID : 1</label>
@@ -292,6 +300,20 @@
         })
     }
 
+    function sortActionEvent(){
+        let target = $(this);
+        if(target.hasClass("up")){
+            target.removeClass("up").addClass("down");
+        }else if(target.hasClass("down")){
+            target.removeClass("down");
+        }else{
+            target.siblings('p').removeClass("up down");
+            target.addClass("up");
+        }
+
+    }
+
+
 
     $(document).on('click','.card input[type=checkbox]', statusUpdateEvent);
     $(document).on('click','.card .button .close', cardDeleteEvent);
@@ -302,7 +324,7 @@
     $('#search-btn').click(function () {
         load(0);
     });
-
+    $('.sort p').click(sortActionEvent);
     $('#create-btn').click(createCardEvent);
     load(0);
 

@@ -44,8 +44,6 @@ public class ItemService {
         responseDto.setTotalPages(list.getTotalPages());
         responseDto.setList(list.getContent().stream().map(item -> modelMapper.map(item, ItemResponseDto.class))
                 .collect(Collectors.toList()));
-
-        //페이징, 검색, 정렬 들어가야함
      return responseDto;
     }
 
