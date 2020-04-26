@@ -5,8 +5,17 @@ import com.jiha.todo.dto.ItemSearchRequestDto;
 import com.jiha.todo.service.ItemService;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.connector.Response;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/item")
@@ -59,5 +68,27 @@ public class ItemController {
         return ResponseEntity.ok(itemService.getList(searchRequestDto));
     }
 
+    /**
+     * 파일 다운로드
+     */
+    @GetMapping("/download")
+    public ResponseEntity<Resource> download(String param) throws IOException {
+        File file = itemService.downloadData();
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
+    }
+
+    /**
+     * 파일 업로드
+     */
+    @PostMapping("/upload")
+    public ResponseEntity upload(MultipartFile file) throws IOException {
+        itemService.upload(file);
+        return ResponseEntity.ok(Response.SC_OK);
+    }
 
 }

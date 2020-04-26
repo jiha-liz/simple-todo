@@ -74,6 +74,11 @@ body{
 .add-div{
     padding: 20px;
 }
+.add-div .button-box{
+    right: 0;
+    display: block;
+    text-align: right;
+}
 .add-div .title{
     font-size: 25px;
     text-decoration: underline;

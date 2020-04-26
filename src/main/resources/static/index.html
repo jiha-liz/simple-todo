@@ -11,6 +11,13 @@
     <div class="contents">
         <div class="add-div">
             <label class="title"> TODO CARD ADD</label>
+            <div class="button-box">
+                <form enctype="multipart/form-data" id="upload-form">
+                    <input type="file" name="file" id="upload-file">
+                    <input type="button" value="복원" id="upload" class="button">
+                    <input type="button" value="백업" id="backup" class="button">
+                </form>
+            </div>
             <dl class="card add-box" id="create-card">
                 <dt>
                     <input type="text" placeholder="내용을 입력해주세요." id="create-contents"> <button class="button" id="create-btn">등록</button>
@@ -326,6 +333,32 @@
         load();
     }
 
+    function uploadEvent(){
+        let form = $('#upload-form')[0];
+        let data = new FormData(form);
+        if($('#upload-file').val() === "") {
+            alert("파일을 선택해주세요.");
+            return false;
+        }
+        let result = confirm("기존 데이터 삭제 후 해당 파일로 복원됩니다.");
+        if(result){
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/item/upload",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (data) {
+                    load(0);
+                },
+                error: function (data) {
+                    alert(data.responseJSON.message);
+                    $('#upload-file').val("");
+                }
+            });
+        }
+    }
 
 
     $(document).on('click','.card input[type=checkbox]', statusUpdateEvent);
@@ -334,6 +367,10 @@
     $(document).on('click','.card .button .edit', cardModeChangeEvent);
     $(document).on('click','.pagination p', changePageLoadEvent);
 
+    $('#upload').click(uploadEvent);
+    $('#backup').click(function(){
+        location.href ="/item/download";
+    });
     $('#search-btn').click(function () {
         load(0);
     });
