@@ -48,7 +48,7 @@ html, jQuery
     </code></pre>
 
  5. 소스 빌드 
-    <pre><code>cd shortener
+    <pre><code>cd simple-todo
     해당 위치에  pom.xml이 있는지 획인
     
     sudo mvn package  
