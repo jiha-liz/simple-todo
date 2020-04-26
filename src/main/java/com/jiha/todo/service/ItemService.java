@@ -9,6 +9,9 @@ import com.jiha.todo.repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +41,7 @@ public class ItemService {
 
     public ItemSearchResponseDto getList(ItemSearchRequestDto searchRequestDto) {
         Page<Item> list= itemRepository.findPageList(searchRequestDto);
+
         ItemSearchResponseDto responseDto = new ItemSearchResponseDto();
         responseDto.setPageable(list.getPageable());
         responseDto.setTotalElements(list.getTotalElements());
@@ -59,7 +63,7 @@ public class ItemService {
     @Transactional
     public void update(ItemRequestDto requestDto) {
         Item item = isValidItem(requestDto.getId());
-        item.setContent(requestDto.getContent());
+        item.setContents(requestDto.getContents());
         convertRefItem(requestDto.getRefItems(), item);
 
         if(item.getRefItems().stream().anyMatch(ref -> !ref.isCompleteYn())){

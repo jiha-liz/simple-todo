@@ -6,7 +6,7 @@ import lombok.Data;
 public class ItemSearchRequestDto {
 
 
-    private String content;
+    private String contents;
 
     private Boolean completeYn;
 
@@ -14,6 +14,8 @@ public class ItemSearchRequestDto {
 
     private int size = 5;
 
-//    private Sort sort = Sort.by(Sort.Direction.ASC, "ID");
+    private String sort;
+
+    private String ascending;
 
 }

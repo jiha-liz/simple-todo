@@ -24,7 +24,7 @@ public class Item {
     private Long id;
 
     @Lob
-    private String content;
+    private String contents;
 
     @ManyToMany
     @JoinTable(name = "item_ref",

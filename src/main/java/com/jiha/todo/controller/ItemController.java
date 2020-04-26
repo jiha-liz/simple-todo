@@ -51,8 +51,9 @@ public class ItemController {
         return ResponseEntity.ok(Response.SC_OK);
     }
 
-
-    //검색 필터 추가
+    /**
+     * 검색
+     */
     @GetMapping("/list")
     public ResponseEntity list(ItemSearchRequestDto searchRequestDto){
         return ResponseEntity.ok(itemService.getList(searchRequestDto));

@@ -11,7 +11,7 @@ public class ItemResponseDto {
 
     private Long id;
 
-    private String content;
+    private String contents;
 
     private List<ItemResponseDto> refItems;
 

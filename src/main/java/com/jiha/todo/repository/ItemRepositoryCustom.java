@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 
 public interface ItemRepositoryCustom {
 
-
-    Page<Item> findPageList (ItemSearchRequestDto searchRequestDto);
+    Page<Item> findPageList (ItemSearchRequestDto searchRequestDto );
 
 }

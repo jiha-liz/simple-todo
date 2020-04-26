@@ -13,7 +13,7 @@
             <label class="title"> TODO CARD ADD</label>
             <dl class="card add-box" id="create-card">
                 <dt>
-                    <input type="text" placeholder="내용을 입력해주세요." id="create-content"> <button class="button" id="create-btn">등록</button>
+                    <input type="text" placeholder="내용을 입력해주세요." id="create-contents"> <button class="button" id="create-btn">등록</button>
                 </dt>
                 <dd><label class="sub-title">참조카드</label><input type="text" placeholder="카드ID 콤마(,)로 연결" id="create-ref"></dd>
             </dl>
@@ -26,15 +26,15 @@
                 <option value="true">완료</option>
                 <option value="false">미완료</option>
             </select>
-            <input type="text" id="search-content"> <button class="button" id="search-btn">검색</button>
+            <input type="text" id="search-contents"> <button class="button" id="search-btn">검색</button>
         </div>
 
         <div class="sort" >
-            <p class="up">작성일</p>
+            <p class="up" data-val="createTime">작성일</p>
             <label class="bar">|</label>
-            <p >최근 수정일</p>
+            <p data-val="updateTime">최근 수정일</p>
             <label class="bar">|</label>
-            <p>내용</p>
+            <p data-val="contents">내용</p>
         </div>
 
         <div class="list">
@@ -80,7 +80,7 @@
                 <label class="id">ID : 4</label>
                 <dt>
                     <input type="checkbox" id="ck_4">
-                    <input type="text" placeholder="Title" value="TODO 4" class="update-content">
+                    <input type="text" placeholder="Title" value="TODO 4" class="update-contents">
                     <div class="button">
                         <div  class="save"></div>
                         <div  class="close"></div>
@@ -129,7 +129,7 @@
             html +=     '<label class="id">ID : '+item.id+'</label>';
             html +=     '<dt>';
             html +=         '<input type="checkbox" id="ck_'+item.id+'" '+checked+'>';
-            html +=         '<label>'+item.content+'</label>';
+            html +=         '<label>'+item.contents+'</label>';
             html +=         '<div class="button">';
             html +=             '<div  class="edit"></div>';
             html +=             '<div  class="close"></div>';
@@ -150,14 +150,27 @@
         if(page === null || page === undefined ) {
             page = Number($('.pagination').find('.selected').text()) ;
         }
+
+        let sort = "";
+        let ascending = "";
+        if($('.sort p').hasClass('up')){
+            sort = $('.sort .up').data('val');
+            ascending = "asc";
+        }else if($('.sort p').hasClass('down')){
+            sort = $('.sort .down').data('val');
+            ascending = "desc";
+        }
+
         $.ajax({
             url:'/item/list',
             type:'GET',
             contentType : 'application/json',
             data:{
-                content : $('#search-content').val(),
+                contents : $('#search-contents').val(),
                 completeYn : $('#search-complete').val(),
-                page : page === 0 ? 0 :  (page -1)
+                page : page === 0 ? 0 :  (page -1),
+                sort : sort,
+                ascending : ascending
             },
             success:function(data){
                 drawCard(data);
@@ -192,7 +205,7 @@
     }
 
     function createCardEvent(){
-        if( $('#create-content').val().trim() ==='')  return false;
+        if( $('#create-contents').val().trim() ==='')  return false;
         let refItems = validRef($('#create-ref'));
         if(refItems === false) return false;
 
@@ -202,11 +215,11 @@
             dataType: 'json',
             contentType : 'application/json',
             data: JSON.stringify({
-                content : $('#create-content').val() .trim(),
+                contents : $('#create-contents').val() .trim(),
                 refItems : refItems
             }),
             success : function(data){
-                $('#create-content').val('');
+                $('#create-contents').val('');
                 $('#create-ref').val('');
                 load();
             },
@@ -256,8 +269,8 @@
     function cardModeChangeEvent() {
         let card = $(this).parents('dl');
         card.addClass('add-box');
-        let content = card.find('dt > label').text();
-        card.find('input[type=checkbox]').after('<input type="text" placeholder="Title" value="'+content+'" class="update-content">');
+        let contents = card.find('dt > label').text();
+        card.find('input[type=checkbox]').after('<input type="text" placeholder="Title" value="'+contents+'" class="update-contents">');
         card.find('dt > label').remove();
         card.find('.button > .edit').removeClass('edit').addClass('save');
 
@@ -276,8 +289,8 @@
     function cardUpdateEvent(){
         let card = $(this).parents('dl');
         let cardId = card.data('id');
-        let content = card.find('.update-content').val();
-        if( content.trim() ==='')  return false;
+        let contents = card.find('.update-contents').val();
+        if( contents.trim() ==='')  return false;
         let refItems = validRef($('.update-ref'));
         if(refItems === false) return false;
 
@@ -288,7 +301,7 @@
             contentType : 'application/json',
             data: JSON.stringify({
                 id:cardId,
-                content : content.trim(),
+                contents : contents.trim(),
                 refItems : refItems
             }),
             success : function(data){
@@ -310,7 +323,7 @@
             target.siblings('p').removeClass("up down");
             target.addClass("up");
         }
-
+        load();
     }
 
 

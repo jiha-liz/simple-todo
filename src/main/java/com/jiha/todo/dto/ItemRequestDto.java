@@ -10,7 +10,7 @@ public class ItemRequestDto {
 
     private Long id;
 
-    private String content;
+    private String contents;
 
     private List<Long> refItems = new ArrayList<>();
 
