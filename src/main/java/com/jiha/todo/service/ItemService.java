@@ -119,7 +119,7 @@ public class ItemService {
         String ext = getExt(file.getOriginalFilename());
         if(!ext.equals("txt")) throw new ValidationException("txt 파일만 가능합니다.");
         else throw new ValidationException("미완료 기능입니다.");
-        
+        System.out.println("TEST");
 //        BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 //        String line = reader.readLine();
 //        ObjectMapper mapper = new ObjectMapper();
