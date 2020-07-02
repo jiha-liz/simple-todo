@@ -84,6 +84,7 @@ public class ItemController {
 
     /**
      * 파일 업로드
+     * 테스트 용 주석입니당
      */
     @PostMapping("/upload")
     public ResponseEntity upload(MultipartFile file) throws IOException {
